@@ -1,0 +1,21 @@
+[Unit]
+Description=CRM Django Gunicorn Service
+After=network.target
+
+[Service]
+Type=notify
+User=www-data
+Group=www-data
+WorkingDirectory=/home/usuario/crm1
+Environment="PATH=/home/usuario/crm1/venv/bin"
+ExecStart=/home/usuario/crm1/venv/bin/gunicorn \
+    --config /home/usuario/crm1/gunicorn_config.py \
+    crm_project.wsgi:application
+ExecReload=/bin/kill -s HUP $MAINPID
+KillMode=mixed
+KillSignal=SIGTERM
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

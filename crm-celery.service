@@ -1,0 +1,19 @@
+[Unit]
+Description=CRM Celery Worker Service
+After=network.target
+
+[Service]
+Type=forking
+User=www-data
+Group=www-data
+WorkingDirectory=/home/usuario/crm1
+Environment="PATH=/home/usuario/crm1/venv/bin"
+ExecStart=/home/usuario/crm1/venv/bin/celery -A crm_project worker \
+    -l info \
+    --pidfile=/var/run/celery/celery.pid \
+    --logfile=/var/log/celery/celery.log
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

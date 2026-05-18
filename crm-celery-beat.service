@@ -1,0 +1,19 @@
+[Unit]
+Description=CRM Celery Beat Service
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/home/usuario/crm1
+Environment="PATH=/home/usuario/crm1/venv/bin"
+ExecStart=/home/usuario/crm1/venv/bin/celery -A crm_project beat \
+    -l info \
+    --scheduler django_celery_beat.schedulers:DatabaseScheduler \
+    --logfile=/var/log/celery/beat.log
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
